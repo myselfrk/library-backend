@@ -1,4 +1,0 @@
-{
-    "jwtPrivateKey":"assignmentKey",
-    "mongoDB-url":"mongodb+srv://myselfrk0mongo0:I6FmCiG2vWEClpy6@cluster0.zj5sj2m.mongodb.net/library?retryWrites=true&w=majority"
-}
