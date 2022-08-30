@@ -1,6 +1,9 @@
 module.exports = {
+  server: {
+    port: 8080
+  },
     database: {
-      url: `mongodb+srv://myselfrk0mongo0:I6FmCiG2vWEClpy6@cluster0.zj5sj2m.mongodb.net/library?retryWrites=true&w=majority`,
+      url: `mongodb+srv://rohitk0:Rohit123@cluster0.zj5sj2m.mongodb.net/library?retryWrites=true&w=majority`,
       properties: {
       }
     },
