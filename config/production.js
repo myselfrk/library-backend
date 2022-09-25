@@ -1,18 +1,16 @@
 module.exports = {
   server: {
-    port: 8080
+    port: 8080,
   },
-    database: {
-      url: `mongodb+srv://rohitk0:Rohit123@cluster0.zj5sj2m.mongodb.net/library?retryWrites=true&w=majority`,
-      properties: {
-      }
-    },
-    key: {
-      privateKey: '37LvDSm4XvjYOh9Y',
-      tokenExpireInSeconds: 1440
-    },
-    pagination: {
-      defaultPage: 1,
-      defaultLimit: 10
-    }
-  };
+  database: {
+    url: `mongodb+srv://rohitk0:Rohit123@cluster0.zj5sj2m.mongodb.net/library?retryWrites=true&w=majority`,
+    properties: {},
+  },
+  key: {
+    privateKey: "37LvDSm4XvjYOh9Y",
+  },
+  pagination: {
+    defaultPage: 1,
+    defaultLimit: 10,
+  },
+};

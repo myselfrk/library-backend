@@ -1,18 +1,16 @@
 module.exports = {
   server: {
-    port: 8080
+    port: 8080,
   },
   database: {
     url: `mongodb://localhost:27017/library`,
-    properties: {
-    }
+    properties: {},
   },
   key: {
-    privateKey: '37LvDSm4XvjYOh9Y',
-    tokenExpireInSeconds: 1440
+    privateKey: "37LvDSm4XvjYOh9Y",
   },
   pagination: {
     defaultPage: 1,
-    defaultLimit: 10
-  }
+    defaultLimit: 10,
+  },
 };

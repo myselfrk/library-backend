@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-const Joi = require('joi');
+const Joi = require("joi");
 const pagination = require("../helpers/pagination");
 const request = require("../helpers/request");
 const response = require("../helpers/response");
 const Branch = require("../models/branch");
-
 
 /**
  * @swagger
@@ -15,32 +14,36 @@ const Branch = require("../models/branch");
  */
 
 exports.list = function (req, res) {
-    Branch.paginate({}, request.getRequestOptions(req), function (err, result) {
-        if (err) return response.sendNotFound(res);
-        pagination.setPaginationHeaders(res, result);
-        res.json(result);
-    });
-}
+  Branch.paginate({}, request.getRequestOptions(req), function (err, data) {
+    if (err) return response.sendNotFound(res);
+    pagination.setPaginationHeaders(res, data);
+    response.sendCreated(res, { data, message: "Branchs successfully fetched" });
+  });
+};
 
 exports.create = function (req, res) {
-    const branch = new Branch(req.body);
-    branch.save(function (err, item) {
-        if (err) return response.sendBadRequest(res, err);
-        response.sendCreated(res, branch);
-
-    });
-}
+  const branch = new Branch(req.body);
+  branch.save(function (err, data) {
+    if (err) return response.sendBadRequest(res, err);
+    response.sendCreated(res, { data, message: "Branch successfully added." });
+  });
+};
 
 exports.update = function (req, res) {
-    Branch.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, item) {
-        if (err) return response.sendBadRequest(res, err);
-        res.json(item);
-    });
-}
+  Branch.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { new: true },
+    function (err, data) {
+      if (err) return response.sendBadRequest(res, err);
+      response.sendCreated(res, { data, message: "Branch successfully updated." });
+    }
+  );
+};
 
 exports.delete = function (req, res) {
-    Branch.remove({ _id: req.params.id }, function (err, item) {
-        if (err) return response.sendNotFound(res);
-        res.json({ message: 'Item successfully deleted' });
-    });
-}
+  Branch.remove({ _id: req.params.id }, function (err) {
+    if (err) return response.sendNotFound(res);
+    response.sendCreated({ message: "Branch successfully deleted." });
+  });
+};
