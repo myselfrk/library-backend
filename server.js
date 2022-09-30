@@ -34,7 +34,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
     .use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
 
 app.get("/", (req, res) => {
-    console.log(req)
     res.send("....")
 })
 

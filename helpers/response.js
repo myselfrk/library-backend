@@ -1,5 +1,5 @@
 exports.sendCreated = function (res, data) {
-  return res.status(200).send({ ...data, statusCode: 200, message: "success" });
+  return res.status(200).send({ statusCode: 200, message: "success",...data });
 };
 
 exports.sendBadRequest = function (res, message) {
