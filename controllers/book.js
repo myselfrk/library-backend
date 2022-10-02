@@ -15,13 +15,10 @@ const Book = require("../models/book");
 
 exports.list = function (req, res) {
   const query = request.getFilteringOptions(req, ["branch_id"]);
-  const { search } = request.getFilteringOptions(req, ["search"]);
+  const { search = "" } = request.getFilteringOptions(req, ["search"]);
   Book.paginate(
-    query,
-    {
-      ...request.getRequestOptions(req),
-      book_name: { $rgex: new RegExp(search) },
-    },
+    {...query,book_name:{$regex: new RegExp(search), $options:"i"}},
+    request.getRequestOptions(req),
     function (err, data) {
       if (err) return response.sendNotFound(res);
       pagination.setPaginationHeaders(res, data);
@@ -66,6 +63,6 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   Branch.remove({ _id: req.params.id }, function (err) {
     if (err) return response.sendNotFound(res);
-    response.sendCreated({ message: "Book successfully deleted." });
+    response.sendCreated(res,{ message: "Book successfully deleted." });
   });
 };

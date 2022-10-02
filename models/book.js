@@ -30,9 +30,11 @@ const BookSchema = new mongoose.Schema({
 });
 
 BookSchema.pre('save', function(next) {
-
-  next();
-
+  console.log(this.branch_id.valueOf());
+  BranchSchema.find({_id:this.branch_id.valueOf()},(err,data)=>{
+    if(err || !data.length) next(err || "Invalid branch ID");
+    next()
+  })
 });
 
 BookSchema.plugin(mongoosePaginate);

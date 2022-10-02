@@ -4,21 +4,21 @@ exports.sendCreated = function (res, data) {
 
 exports.sendBadRequest = function (res, message) {
   return res.status(400).send({
-    statusCode: 200,
+    statusCode: 400,
     message: message,
   });
 };
 
 exports.sendUnauthorized = function (res, message) {
   return res.status(401).send({
-    statusCode: 200,
+    statusCode: 401,
     message: message,
   });
 };
 
 exports.sendForbidden = function (res) {
   return res.status(403).send({
-    statusCode: 200,
+    statusCode: 403,
     message: "You do not have rights to access this resource.",
   });
 };
