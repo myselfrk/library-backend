@@ -42,8 +42,7 @@ exports.update = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-  Branch.deleteOne({ _id: req.params.id }, function (err,data) {
-    console.log(data)
+  Branch.remove({ _id: req.params.id }, function (err,data) {
     if (err) return response.sendNotFound(res);
     if(data.deletedCount)
     response.sendCreated(res,{ message: "Branch successfully deleted." });

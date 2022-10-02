@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate");
+const BranchSchema = require("./branch");
 
 const BookSchema = new mongoose.Schema({
   book_name: {
@@ -26,6 +27,12 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+
+BookSchema.pre('save', function(next) {
+
+  next();
+
 });
 
 BookSchema.plugin(mongoosePaginate);

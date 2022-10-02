@@ -38,3 +38,4 @@ exports.setHeadersForCORS = function (req, res, next) {
   );
   next();
 };
+ 
