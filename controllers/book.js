@@ -33,6 +33,7 @@ exports.list = function (req, res) {
 exports.getOne = function (req, res) {
   Book.find({ _id: req.params.id }, function (err, data) {
     if (err) return response.sendBadRequest(res, err);
+    if(!data.length) return response.sendNotFound(res)
     response.sendCreated(res, { data, message: "Book successfully fetched." });
   });
 };
