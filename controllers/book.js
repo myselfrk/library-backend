@@ -21,7 +21,7 @@ exports.list = function (req, res) {
     request.getRequestOptions(req),
     function (err, data) {
       if (err) return response.sendNotFound(res);
-      pagination.setPaginationHeaders(res, data);
+      pagination.setPaginationHeaders(res, data); 
       response.sendCreated(res, {
         data,
         message: "Books successfully fetched.",
@@ -61,7 +61,7 @@ exports.update = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-  Branch.remove({ _id: req.params.id }, function (err) {
+  Book.remove({ _id: req.params.id }, function (err) {
     if (err) return response.sendNotFound(res);
     response.sendCreated(res,{ message: "Book successfully deleted." });
   });
