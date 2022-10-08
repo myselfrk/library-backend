@@ -1,7 +1,7 @@
 const config =  require('config');
 
 exports.getPaginationOptions = function(req) {
-  const page = (req.query.page !== undefined) ? parseInt(req.query.page) : config.pagination.defaultPage;
+  const page = (req.query.pageNo !== undefined) ? parseInt(req.query.pageNo) : config.pagination.defaultPage;
   const limit = (req.query.pageSize !== undefined) ? parseInt(req.query.pageSize) : config.pagination.defaultLimit;
 
   return {

@@ -7,8 +7,9 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  branch_id: {
+  branch: {
     type: mongoose.Schema.Types.ObjectId,
+    ref:'Branch',
     required: true,
   },
   description: {
@@ -27,11 +28,11 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-});
+ 
+},{timestamps:{ createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 BookSchema.pre('save', function(next) {
-  console.log(this.branch_id.valueOf());
-  BranchSchema.find({_id:this.branch_id.valueOf()},(err,data)=>{
+  BranchSchema.find({_id:this.branch.valueOf()},(err,data)=>{
     if(err || !data.length) next(err || "Invalid branch ID");
     next()
   })
