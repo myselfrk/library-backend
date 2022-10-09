@@ -11,6 +11,7 @@ exports.list = function (req, res) {
   const options = {
     ...request.getRequestOptions(req),
     populate: { path: "branch", select: ["_id", "branch_name"] },
+    sort:{ created_at: -1 }
   };
 
   Book.paginate(
