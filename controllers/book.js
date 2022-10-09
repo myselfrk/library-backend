@@ -65,7 +65,7 @@ exports.update = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-  Book.remove({ _id: req.params.id }, function (err) {
+  Book.deleteOne({ _id: req.params.id }, function (err) {
     if (err) return response.sendNotFound(res);
     response.sendCreated(res, { message: "Book successfully deleted." });
   });

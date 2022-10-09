@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
 const Joi = require("joi");
 const pagination = require("../helpers/pagination");
 const request = require("../helpers/request");
 const response = require("../helpers/response");
 const Branch = require("../models/branch");
-const Book = require("../models/book");
+const BookSchema = require("../models/book");
 
 exports.list = function (req, res) {
   const { search = "" } = request.getFilteringOptions(req, ["search"]);
@@ -48,8 +47,10 @@ exports.delete = function (req, res) {
   Branch.deleteOne({ _id: req.params.id }, function (err, data) {
     if (err) return response.sendNotFound(res);
     if (data.deletedCount) {
-      response.sendCreated(res, {
-        message: "Branch successfully deleted.",
+      BookSchema.deleteMany({ branch: req.params.id }, function (err, data) {
+        response.sendCreated(res, {
+          message: "Branch successfully deleted.",
+        });
       });
     } else {
       response.sendCreated(res, {
