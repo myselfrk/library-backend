@@ -9,17 +9,16 @@ const Book = require("../models/book");
 exports.list = function (req, res) {
   const { search = "" } = request.getFilteringOptions(req, ["search"]);
 
-  Branch.find(
-    { branch_name: { $regex: new RegExp(search), $options: "i" } },
-    function (err, data) {
+  Branch.find({ branch_name: { $regex: new RegExp(search), $options: "i" } })
+    .sort({ createdAt: -1 })
+    .exec(function (err, data) {
       if (err) return response.sendNotFound(res);
       pagination.setPaginationHeaders(res, data);
       response.sendCreated(res, {
         data,
         message: "Branchs successfully fetched",
       });
-    }
-  );
+    });
 };
 
 exports.create = function (req, res) {
