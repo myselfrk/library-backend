@@ -16,7 +16,7 @@ exports.list = function (req, res) {
   Book.paginate(
     {
       ...query,
-      soft_deleted: false,
+      soft_deleted: { $ne: true },
       book_name: { $regex: new RegExp(search), $options: "i" },
     },
     options,

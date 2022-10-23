@@ -21,6 +21,7 @@ exports.list = function (req, res) {
   Student.paginate(
     {
       ...query,
+      soft_deleted: { $ne: true },
       full_name: { $regex: new RegExp(search), $options: "i" },
       issued_books: { $in: book_id },
     },

@@ -10,7 +10,7 @@ exports.list = function (req, res) {
 
   Branch.find({
     branch_name: { $regex: new RegExp(search), $options: "i" },
-    soft_deleted: false,
+    soft_deleted: { $ne: true },
   })
     .sort({ created_at: -1 })
     .exec(function (err, data) {
