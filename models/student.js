@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate");
 const BranchSchema = require("./branch");
+const BookSchema = require("./book");
 
-const BookSchema = new mongoose.Schema(
+const studentSchema = new mongoose.Schema(
   {
-    book_name: {
+    full_name: {
       type: String,
+      trim: true,
       required: true,
     },
     branch: {
@@ -13,22 +15,20 @@ const BookSchema = new mongoose.Schema(
       ref: "Branch",
       required: true,
     },
-    description: {
+    email: {
       type: String,
+      unique: true,
+      trim: true,
+      immutable: true,
       required: true,
     },
-    stock: {
-      type: Number,
-      required: true,
-    },
-    author: {
-      type: String,
-      required: true,
-    },
-    publisher: {
-      type: String,
-      required: true,
-    },
+    issued_books: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book",
+        required: true,
+      },
+    ],
     soft_deleted: {
       type: Boolean,
       default: false,
@@ -37,13 +37,19 @@ const BookSchema = new mongoose.Schema(
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
-BookSchema.pre("save", function (next) {
+studentSchema.pre("save", function (next) {
   BranchSchema.find({ _id: this.branch.valueOf() }, (err, data) => {
     if (err || !data.length) next(err || "Invalid branch ID");
+    BookSchema.find(
+      { _id: { $in: this.issued_books.valueOf() } },
+      (err, data) => {
+        if (err || !data.length) next(err || "Invalid book ID");
+      }
+    );
     next();
   });
 });
 
-BookSchema.plugin(mongoosePaginate);
+studentSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Book", BookSchema);
+module.exports = mongoose.model("Student", studentSchema);
