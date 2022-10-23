@@ -4,7 +4,7 @@ const response = require("../helpers/response");
 const Student = require("../models/student");
 
 exports.list = function (req, res) {
-  const query = request.getFilteringOptions(req, ["branch_id"]);
+  const query = request.getFilteringOptions(req, ["branch"]);
   const { search = "", book_id } = request.getFilteringOptions(req, [
     "search",
     "book_id",
@@ -14,7 +14,10 @@ exports.list = function (req, res) {
     ...request.getRequestOptions(req),
     populate: [
       { path: "branch", select: ["_id", "branch_name"] },
-      { path: "issued_books", select: ["_id", "book_name"] },
+      {
+        path: "issued_books",
+        select: ["_id", "book_name"],
+      },
     ],
     sort: { full_name: -1 },
   };
@@ -22,9 +25,9 @@ exports.list = function (req, res) {
   Student.paginate(
     {
       ...query,
+      ...(book_id ? { issued_books: book_id } : null),
       soft_deleted: { $ne: true },
       full_name: { $regex: new RegExp(search), $options: "i" },
-      // issued_books: { _id: book_id },
     },
     options,
     function (err, data) {
@@ -55,8 +58,6 @@ exports.getOne = function (req, res) {
 };
 
 exports.create = function (req, res) {
-  // console.log(req.body);
-  // return res.send("");
   const student = new Student(req.body);
   student.save(function (err, data) {
     if (err) return response.sendBadRequest(res, err);

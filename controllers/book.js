@@ -5,7 +5,7 @@ const response = require("../helpers/response");
 const Book = require("../models/book");
 
 exports.list = function (req, res) {
-  const query = request.getFilteringOptions(req, ["branch_id"]);
+  const query = request.getFilteringOptions(req, ["branch"]);
   const { search = "" } = request.getFilteringOptions(req, ["search"]);
   const options = {
     ...request.getRequestOptions(req),
