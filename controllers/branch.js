@@ -8,7 +8,10 @@ const BookSchema = require("../models/book");
 exports.list = function (req, res) {
   const { search = "" } = request.getFilteringOptions(req, ["search"]);
 
-  Branch.find({ branch_name: { $regex: new RegExp(search), $options: "i" } })
+  Branch.find({
+    branch_name: { $regex: new RegExp(search), $options: "i" },
+    soft_deleted: false,
+  })
     .sort({ created_at: -1 })
     .exec(function (err, data) {
       if (err) return response.sendNotFound(res);
@@ -44,18 +47,16 @@ exports.update = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-  Branch.deleteOne({ _id: req.params.id }, function (err, data) {
-    if (err) return response.sendNotFound(res);
-    if (data.deletedCount) {
-      BookSchema.deleteMany({ branch: req.params.id }, function (err, data) {
-        response.sendCreated(res, {
-          message: "Branch successfully deleted.",
-        });
-      });
-    } else {
+  Branch.findOneAndUpdate(
+    { _id: req.params.id },
+    { soft_deleted: true },
+    { new: true },
+    function (err, data) {
+      if (err) return response.sendBadRequest(res, err);
       response.sendCreated(res, {
-        message: "Branch doesn't exist or already has been deleted.",
+        data,
+        message: "Branch successfully deleted.",
       });
     }
-  });
+  );
 };
