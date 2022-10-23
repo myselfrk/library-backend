@@ -26,7 +26,6 @@ const studentSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Book",
-        required: true,
       },
     ],
     soft_deleted: {
