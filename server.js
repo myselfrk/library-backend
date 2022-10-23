@@ -1,45 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const config = require('config');
-const swaggerUI = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
-const cors = require('cors');
-require('./dbConnect');
-const routes = require('./routes');
-
-const options = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "Library API",
-            version: "1.0.0",
-            description: "Library Management API"
-        },
-        servers: [
-            {
-                url: "http://localhost:8080"
-            }
-        ],
-
-    },
-    apis: ["./controllers/*.js"]
-}
-
-const specs = swaggerJsDoc(options)
+const express = require("express");
+const bodyParser = require("body-parser");
+const config = require("config");
+const cors = require("cors");
+require("./dbConnect");
+const routes = require("./routes");
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }))
-    .use(bodyParser.json())
-    .use(cors())
-    .use('/api', routes)
-    .use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
+app
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+  .use(cors())
+  .use("/api", routes);
 
 app.get("/", (req, res) => {
-    res.send("....")
-})
+  res.send("library backend");
+});
 
 const port = process.env.PORT || config.server.port;
 app.listen(port);
-console.log('Node + Express REST API server started on port: ' + port);
-
+console.log("Node + Express REST API server started on port: " + port);

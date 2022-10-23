@@ -54,6 +54,8 @@ exports.getOne = function (req, res) {
 };
 
 exports.create = function (req, res) {
+  console.log(req.body);
+  return res.send("");
   const student = new Student(req.body);
   student.save(function (err, data) {
     if (err) return response.sendBadRequest(res, err);
