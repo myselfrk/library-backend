@@ -1,9 +1,7 @@
-const Joi = require("joi");
 const pagination = require("../helpers/pagination");
 const request = require("../helpers/request");
 const response = require("../helpers/response");
 const Branch = require("../models/branch");
-const BookSchema = require("../models/book");
 
 exports.list = function (req, res) {
   const { search = "" } = request.getFilteringOptions(req, ["search"]);
