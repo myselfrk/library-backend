@@ -19,4 +19,5 @@ app.get("/", (req, res) => {
 
 const port = process.env.PORT || config.server.port;
 app.listen(port);
-console.log("Node + Express REST API server started on port: " + port);
+
+console.log('Node + Express REST API server started on port: ' + port);
