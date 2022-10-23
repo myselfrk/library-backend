@@ -21,6 +21,7 @@ exports.list = function (req, res) {
   Student.paginate(
     {
       ...query,
+      soft_deleted: { $ne: true },
       full_name: { $regex: new RegExp(search), $options: "i" },
       issued_books: { $in: book_id },
     },
@@ -37,7 +38,7 @@ exports.list = function (req, res) {
 };
 
 exports.getOne = function (req, res) {
-  Student.find({ _id: req.params.id })
+  Student.find({ _id: req.params.id }, ["-soft_deleted"])
     .populate([
       { path: "branch", select: ["_id", "branch_name"] },
       { path: "book", select: ["_id", "book_name"] },
@@ -53,6 +54,8 @@ exports.getOne = function (req, res) {
 };
 
 exports.create = function (req, res) {
+  console.log(req.body);
+  return res.send("");
   const student = new Student(req.body);
   student.save(function (err, data) {
     if (err) return response.sendBadRequest(res, err);
