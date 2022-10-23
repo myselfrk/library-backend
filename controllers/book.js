@@ -11,6 +11,7 @@ exports.list = function (req, res) {
     ...request.getRequestOptions(req),
     populate: { path: "branch", select: ["_id", "branch_name"] },
     sort: { created_at: -1 },
+    select: ["-soft_deleted"],
   };
 
   Book.paginate(
@@ -32,7 +33,7 @@ exports.list = function (req, res) {
 };
 
 exports.getOne = function (req, res) {
-  Book.find({ _id: req.params.id })
+  Book.find({ _id: req.params.id }, ["-soft_deleted"])
     .populate({ path: "branch", select: ["_id", "branch_name"] })
     .exec(function (err, data) {
       if (err) return response.sendBadRequest(res, err);

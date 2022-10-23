@@ -38,7 +38,7 @@ exports.list = function (req, res) {
 };
 
 exports.getOne = function (req, res) {
-  Student.find({ _id: req.params.id })
+  Student.find({ _id: req.params.id }, ["-soft_deleted"])
     .populate([
       { path: "branch", select: ["_id", "branch_name"] },
       { path: "book", select: ["_id", "book_name"] },
