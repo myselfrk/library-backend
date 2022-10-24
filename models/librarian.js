@@ -14,15 +14,16 @@ const librarianSchema = new mongoose.Schema(
       immutable: true,
       required: true,
     },
-    password:{
-        type:String,
-        required:true
-    }
+    password: {
+      type: String,
+      required: true,
+    },
+    last_login: {
+      type: Date,
+      default: new Date(),
+    },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
-
-
-
 
 module.exports = mongoose.model("Librarian", librarianSchema);
