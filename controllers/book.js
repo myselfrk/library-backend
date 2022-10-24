@@ -18,6 +18,7 @@ exports.list = function (req, res) {
     {
       ...query,
       soft_deleted: { $ne: true },
+
       book_name: { $regex: new RegExp(search), $options: "i" },
     },
     options,

@@ -37,27 +37,28 @@ exports.login = function (req, res) {
       if (!isSame) {
         return response.sendBadRequest(res, "Invalid email or password");
       } else {
-        const token = jwt.sign({ email, full_name }, config.key.privateKey, {
-          expiresIn: "24h",
-        });
-
-        Librarian.findByIdAndUpdate(
-          { _id },
-          { last_login: new Date() },
-          function (err) {
-            if (err) {
-              return response.sendBadRequest(
-                res,
-                "something went wrong, please try again."
-              );
-            } else {
-              response.sendCreated(res, {
-                data: { token, email, full_name },
-                message: "logedin successfully.",
-              });
-            }
+        const last_login = new Date();
+        const token = jwt.sign(
+          { email, full_name, _id, last_login },
+          config.key.privateKey,
+          {
+            expiresIn: "24h",
           }
         );
+
+        Librarian.findByIdAndUpdate({ _id }, { last_login }, function (err) {
+          if (err) {
+            return response.sendBadRequest(
+              res,
+              "something went wrong, please try again."
+            );
+          } else {
+            response.sendCreated(res, {
+              data: { token, email, full_name },
+              message: "logedin successfully.",
+            });
+          }
+        });
       }
     }
   });

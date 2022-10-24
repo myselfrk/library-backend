@@ -4,7 +4,7 @@ const auth = require("./../middleware/auth");
 
 const routes = express.Router({ mergeParams: true });
 
-routes.use(auth).route("/").get(branch.list).post(branch.create);
+routes.route("/").get(branch.list).post(auth, branch.create);
 routes.use(auth).route("/:id").put(branch.update).delete(branch.delete);
 
 module.exports = routes;

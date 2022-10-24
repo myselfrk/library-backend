@@ -6,10 +6,13 @@ const Branch = require("../models/branch");
 exports.list = function (req, res) {
   const { search = "" } = request.getFilteringOptions(req, ["search"]);
 
-  Branch.find({
-    branch_name: { $regex: new RegExp(search), $options: "i" },
-    soft_deleted: { $ne: true },
-  })
+  Branch.find(
+    {
+      branch_name: { $regex: new RegExp(search), $options: "i" },
+      soft_deleted: { $ne: true },
+    },
+    ["-soft_deleted"]
+  )
     .sort({ created_at: -1 })
     .exec(function (err, data) {
       if (err) return response.sendNotFound(res);
