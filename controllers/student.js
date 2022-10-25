@@ -1,6 +1,7 @@
 const pagination = require("../helpers/pagination");
 const request = require("../helpers/request");
 const response = require("../helpers/response");
+const Book = require("../models/book");
 const Student = require("../models/student");
 
 exports.list = function (req, res) {
@@ -58,7 +59,8 @@ exports.getOne = function (req, res) {
 };
 
 exports.create = function (req, res) {
-  const student = new Student(req.body);
+  const { full_name, branch, email } = req.body;
+  const student = new Student({ full_name, branch, email });
   student.save(function (err, data) {
     if (err) return response.sendBadRequest(res, err);
     response.sendCreated(res, { data, message: "Student successfully added." });
@@ -66,9 +68,10 @@ exports.create = function (req, res) {
 };
 
 exports.update = function (req, res) {
+  const { full_name, branch, email } = req.body;
   Student.findOneAndUpdate(
     { _id: req.params.id },
-    req.body,
+    { full_name, branch, email },
     { new: true },
     function (err, data) {
       if (err) return response.sendBadRequest(res, err);
@@ -78,6 +81,26 @@ exports.update = function (req, res) {
       });
     }
   );
+};
+
+exports.issueBook = function (req, res) {
+  Student.findById({ _id: req.params.id }, function (err, data) {
+    if (err) return response.sendBadRequest(res, err);
+
+    const allIssuedBook = data.issued_books.map((obj) => obj.valueOf());
+
+    const toIssue = req.body.issued_books.filter(
+      (id) => !allIssuedBook.includes(id)
+    );
+
+    const submitedBook = allIssuedBook.filter(
+      (id) => !req.body.issued_books.includes(id)
+    );
+
+    console.log(toIssue, submitedBook);
+
+    res.send("");
+  });
 };
 
 exports.delete = function (req, res) {
