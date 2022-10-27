@@ -20,7 +20,7 @@ exports.list = function (req, res) {
         select: ["_id", "book_name"],
       },
     ],
-    sort: { full_name: -1 },
+    sort: { full_name: 1 },
   };
 
   Student.paginate(
@@ -60,18 +60,31 @@ exports.getOne = function (req, res) {
 
 exports.create = function (req, res) {
   const { full_name, branch, email } = req.body;
-  const student = new Student({ full_name, branch, email });
-  student.save(function (err, data) {
+
+  Student.find({ email: email }, function (err, data) {
     if (err) return response.sendBadRequest(res, err);
-    response.sendCreated(res, { data, message: "Student successfully added." });
+    if (data.length)
+      return response.sendBadRequest(
+        res,
+        "Student with this email already exist."
+      );
+
+    const student = new Student({ full_name, branch, email });
+    student.save(function (err, data) {
+      if (err) return response.sendBadRequest(res, err);
+      response.sendCreated(res, {
+        data,
+        message: "Student successfully added.",
+      });
+    });
   });
 };
 
 exports.update = function (req, res) {
-  const { full_name, branch, email } = req.body;
+  const { full_name, branch } = req.body;
   Student.findOneAndUpdate(
     { _id: req.params.id },
-    { full_name, branch, email },
+    { full_name, branch },
     { new: true },
     function (err, data) {
       if (err) return response.sendBadRequest(res, err);
