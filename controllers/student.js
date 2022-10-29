@@ -45,14 +45,14 @@ exports.list = function (req, res) {
 exports.getOne = function (req, res) {
   Student.find({ _id: req.params.id }, ["-soft_deleted"])
     .populate([
-      { path: "Branch", select: ["_id", "branch_name"] },
-      { path: "Book", select: ["_id", "book_name"] },
+      { path: "branch", select: ["_id", "branch_name"] },
+      { path: "issued_books", select: ["_id", "book_name"] },
     ])
     .exec(function (err, data) {
       if (err) return response.sendBadRequest(res, err);
-      if (!data.length) return response.sendNotFound(res);
+      if (!data) return response.sendNotFound(res);
       response.sendCreated(res, {
-        data: data[0],
+        data,
         message: "Student successfully fetched.",
       });
     });
