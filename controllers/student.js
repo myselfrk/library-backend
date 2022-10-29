@@ -52,7 +52,7 @@ exports.getOne = function (req, res) {
       if (err) return response.sendBadRequest(res, err);
       if (!data) return response.sendNotFound(res);
       response.sendCreated(res, {
-        data,
+        data: data[0],
         message: "Student successfully fetched.",
       });
     });
