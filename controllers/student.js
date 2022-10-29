@@ -45,8 +45,8 @@ exports.list = function (req, res) {
 exports.getOne = function (req, res) {
   Student.find({ _id: req.params.id }, ["-soft_deleted"])
     .populate([
-      { path: "branch", select: ["_id", "branch_name"] },
-      { path: "book", select: ["_id", "book_name"] },
+      { path: "Branch", select: ["_id", "branch_name"] },
+      { path: "Book", select: ["_id", "book_name"] },
     ])
     .exec(function (err, data) {
       if (err) return response.sendBadRequest(res, err);
