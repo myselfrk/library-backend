@@ -54,10 +54,11 @@ exports.delete = function (req, res) {
     { new: true },
     function (err, data) {
       if (err) return response.sendBadRequest(res, err);
-      response.sendCreated(res, {
-        data,
-        message: "Branch successfully deleted.",
-      });
+      if (data)
+        response.sendCreated(res, {
+          data,
+          message: "Branch successfully deleted.",
+        });
     }
   );
 };
